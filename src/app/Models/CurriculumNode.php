@@ -8,9 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use App\Models\Pivots\CurriculumNodeLearningUnit;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class CurriculumNode extends Model
 {
+    use HasUuids;
+
     protected $table = 'curriculum_nodes';
 
     protected $guarded = [];
@@ -41,11 +44,10 @@ class CurriculumNode extends Model
         return $this->hasMany(self::class, 'parent_id')->orderBy('order_index');
     }
 
-    public function learningUnits(): BelongsToMany
+    public function learningUnits()
     {
         return $this->belongsToMany(LearningUnit::class, 'curriculum_node_learning_unit', 'curriculum_node_id', 'learning_unit_id')
             ->using(CurriculumNodeLearningUnit::class)
-            ->withPivot(['order_index'])
-            ->orderBy('pivot_order_index'); // اگر ستون pivot دقیقاً order_index است، این خط را تغییر بده (پایین توضیح دادم)
+            ->withPivot(['order_index']);
     }
 }

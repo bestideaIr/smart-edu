@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Pivots\LearningUnitCompetency;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class LearningUnit extends Model
 {
+    use HasUuids;
+
     protected $table = 'learning_units';
 
     protected $guarded = [];
@@ -23,7 +26,7 @@ class LearningUnit extends Model
             ->withPivot(['order_index']);
     }
 
-    public function competencies(): BelongsToMany
+    public function competencies()
     {
         return $this->belongsToMany(Competency::class, 'learning_unit_competency', 'learning_unit_id', 'competency_id')
             ->using(LearningUnitCompetency::class)

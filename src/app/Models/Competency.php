@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Competency extends Model
 {
+    use HasUuids;
+
     protected $table = 'competencies';
 
     protected $guarded = [];
